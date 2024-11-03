@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import ChatBox from "./components/ChatBox";
+import InputArea from "./components/InputArea";
+import "./App.css";
 
 function App() {
+  const [messages, setMessages] = useState([
+    { text: "Hello! How can I assist you today?", sender: "bot" },
+  ]);
+
+  const handleSendMessage = (text) => {
+    if (text.trim()) {
+      const newMessages = [...messages, { text, sender: "user" }];
+      setMessages(newMessages);
+
+      // Simulate bot response
+      setTimeout(() => {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: "I'm here to help with your queries!", sender: "bot" },
+        ]);
+      }, 1000);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <ChatBox messages={messages} />
+      <InputArea onSendMessage={handleSendMessage} />
     </div>
   );
 }
